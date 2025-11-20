@@ -64,11 +64,11 @@ func TestKeyPair_FS(t *testing.T) {
 	}
 	tmp := filepath.Join(os.TempDir(), "private.key")
 	defer func() { _ = os.Remove(tmp) }()
-	if err = pair.Save(tmp); err != nil {
+	if err = pair.SavePrivateKey(tmp); err != nil {
 		t.Fatalf("Error saving key pair: %v", err)
 	}
 	p2 := &KeyPair{}
-	if err = p2.Load(tmp); err != nil {
+	if err = p2.LoadPrivateKey(tmp); err != nil {
 		t.Fatalf("Error loading key pair: %v", err)
 	}
 	if !reflect.DeepEqual(p2, pair) {

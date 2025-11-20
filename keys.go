@@ -8,6 +8,7 @@ import (
 	"github.com/ethereum/go-ethereum/crypto"
 )
 
+// GenerateKeyPair using secp256k1.
 func GenerateKeyPair() (*KeyPair, error) {
 	privateKey, err := crypto.GenerateKey()
 	if err != nil {
@@ -19,24 +20,28 @@ func GenerateKeyPair() (*KeyPair, error) {
 	}, nil
 }
 
+// LoadKeyPair from file.
 func LoadKeyPair(file string) (*KeyPair, error) {
 	kp := &KeyPair{}
-	if err := kp.Load(file); err != nil {
+	if err := kp.LoadPrivateKey(file); err != nil {
 		return nil, fmt.Errorf("failed to load key pair: %w", err)
 	}
 	return kp, nil
 }
 
+// KeyPair contains both PrivateKey and PublicKey.
 type KeyPair struct {
 	PrivateKey *ecdsa.PrivateKey
 	PublicKey  *ecdsa.PublicKey
 }
 
+// MarshalPrivateKey to bytes.
 func (k *KeyPair) MarshalPrivateKey() []byte {
 	return crypto.FromECDSA(k.PrivateKey)
 }
 
-func (k *KeyPair) Save(file string) error {
+// SavePrivateKey to file.
+func (k *KeyPair) SavePrivateKey(file string) error {
 	f, err := os.Create(file)
 	if err != nil {
 		return fmt.Errorf("failed to create file: %w", err)
@@ -48,6 +53,7 @@ func (k *KeyPair) Save(file string) error {
 	return nil
 }
 
+// UnmarshalPrivateKey from bytes.
 func (k *KeyPair) UnmarshalPrivateKey(b []byte) (err error) {
 	k.PrivateKey, err = crypto.ToECDSA(b)
 	if err != nil {
@@ -57,7 +63,8 @@ func (k *KeyPair) UnmarshalPrivateKey(b []byte) (err error) {
 	return nil
 }
 
-func (k *KeyPair) Load(file string) error {
+// LoadPrivateKey from file.
+func (k *KeyPair) LoadPrivateKey(file string) error {
 	b, err := os.ReadFile(file)
 	if err != nil {
 		return fmt.Errorf("failed to read private key: %w", err)
@@ -65,10 +72,12 @@ func (k *KeyPair) Load(file string) error {
 	return k.UnmarshalPrivateKey(b)
 }
 
+// MarshalPublicKey to bytes.
 func (k *KeyPair) MarshalPublicKey() []byte {
 	return crypto.CompressPubkey(k.PublicKey)
 }
 
+// UnmarshalPublicKey from bytes.
 func UnmarshalPublicKey(b []byte) (*ecdsa.PublicKey, error) {
 	key, err := crypto.DecompressPubkey(b)
 	if err != nil {
