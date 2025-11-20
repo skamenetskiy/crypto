@@ -1,4 +1,4 @@
-module github.com/skamenetskiy/crypto
+module github.com/skamenetskiy/ecrypto
 
 go 1.25
 
