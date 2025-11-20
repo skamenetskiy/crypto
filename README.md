@@ -1,4 +1,4 @@
-# ecrypto
+# crypto
 
 [![Go](https://github.com/skamenetskiy/crypto/actions/workflows/go.yml/badge.svg)](https://github.com/skamenetskiy/crypto/actions/workflows/go.yml)
 
